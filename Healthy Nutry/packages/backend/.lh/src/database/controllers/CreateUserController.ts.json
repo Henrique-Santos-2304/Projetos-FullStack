@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/database/controllers/CreateUserController.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1645391934598,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1645391934598,
+            "name": "Commit-0",
+            "content": "import { Request, Response } from \"express\";\nimport { CreateUserService } from \"../services/CreateUserServices\";\n\nexport class CreateUserController {\n  async handle(request: Request, response: Response) {\n    const { name, username, email, password } = request.body;\n\n    const service = new CreateUserService();\n\n    const result = await service.execute({\n      name,\n      username,\n      email,\n      password,\n    });\n    if (result instanceof Error) {\n      return response.status(400).json(result.message);\n    }\n\n    return response.status(201).json(result);\n  }\n}\n"
+        }
+    ]
+}

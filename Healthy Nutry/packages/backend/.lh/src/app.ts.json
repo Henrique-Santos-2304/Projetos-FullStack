@@ -1,0 +1,22 @@
+{
+    "sourceFile": "src/app.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1645390833114,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1645401074949,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,11 +1,13 @@\n import \"reflect-metadata\";\n var cors = require(\"cors\");\n const express = require(\"express\");\n-import \"./database\";\n+import createConnection from \"./database\";\n import { routes } from \"./routes\";\n const app = express();\n \n+createConnection();\n+\n app.use(cors());\n app.use(express.json());\n app.use(routes);\n \n"
+                }
+            ],
+            "date": 1645390833114,
+            "name": "Commit-0",
+            "content": "import \"reflect-metadata\";\nvar cors = require(\"cors\");\nconst express = require(\"express\");\nimport \"./database\";\nimport { routes } from \"./routes\";\nconst app = express();\n\napp.use(cors());\napp.use(express.json());\napp.use(routes);\n\nexport { app };\n"
+        }
+    ]
+}

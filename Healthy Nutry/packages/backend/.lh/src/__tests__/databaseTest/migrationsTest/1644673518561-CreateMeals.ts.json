@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/__tests__/databaseTest/migrationsTest/1644673518561-CreateMeals.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1645403218758,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1645403218758,
+            "name": "Commit-0",
+            "content": "import { MigrationInterface, QueryRunner, Table } from \"typeorm\";\n\nexport class CreateMeals1644673518561 implements MigrationInterface {\n  public async up(queryRunner: QueryRunner): Promise<void> {\n    await queryRunner.createTable(\n      new Table({\n        name: \"meals\",\n        columns: [\n          {\n            name: \"id\",\n            type: \"uuid\",\n            isPrimary: true,\n          },\n          {\n            name: \"name\",\n            type: \"varchar\",\n          },\n          {\n            name: \"protein\",\n            type: \"varchar\",\n          },\n          {\n            name: \"quantity_proteins\",\n            type: \"varchar\",\n          },\n          {\n            name: \"carbohydrate\",\n            type: \"varchar\",\n          },\n          {\n            name: \"quantity_carbohydrate\",\n            type: \"varchar\",\n          },\n          {\n            name: \"vegetable\",\n            type: \"varchar\",\n          },\n          {\n            name: \"quantity_vegetable\",\n            type: \"varchar\",\n          },\n          {\n            name: \"created_at\",\n            type: \"timestamp\",\n            default: \"now()\",\n          },\n          {\n            name: \"user_id\",\n            type: \"uuid\",\n          },\n        ],\n      })\n    );\n  }\n\n  public async down(queryRunner: QueryRunner): Promise<void> {\n    await queryRunner.dropTable(\"meals\");\n  }\n}\n"
+        }
+    ]
+}

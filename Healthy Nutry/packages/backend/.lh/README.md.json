@@ -1,0 +1,18 @@
+{
+    "sourceFile": "README.md",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1645389294586,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1645389294583,
+            "name": "Commit-0",
+            "content": "**Instruções para instalação e inicialização do projeto**\n\n**_Criar banco de dados Postgres Local_**\n\n1 --> Abra o terminal do seu Sistema Operacional\n\n2 --> sudo -u postgres -i\n\n3 --> psql\n\n4 --> create database nutridb;\n\n5 --> create user healthy with encrypted password 'nutri';\n\nTeste para ver se realmente está configurado\n\n6 --> ALTER USER healthy WITH PASSWORD 'nutri';\n\n7 --> grant all privileges on database nutridb to healthy;\n\n8 --> \\c nutridb\n\n9 --> **set timezone='posix/Brazil/East';**\n\n10 --> CREATE EXTENSIO IF NOT EXISTS \"uuid-ossp\";\n\n11 --> \\q\n\n11 --> exit\n\n##### **_Abra o terminal pasta do projeto Backend e rode os comandos_ **\n\n12 --> yarn install ou yarn\n\n13 --> yarn typeorm migration:run\n\n14 --> yarn dev\n"
+        }
+    ]
+}

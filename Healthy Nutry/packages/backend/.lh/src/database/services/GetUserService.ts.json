@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/database/services/GetUserService.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1645390014763,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1645390014763,
+            "name": "Commit-0",
+            "content": "import { getRepository } from \"typeorm\";\nimport { Users } from \"../entities/User\";\n\nexport class GetUserService {\n  async execute(userName: string, password: string) {\n    const repo = getRepository(Users);\n\n    const user = await repo.find({ where: { username: userName } });\n\n    if (!user || user.length === 0) {\n      return { errorMessage: \"Usuario não encontrado\" };\n    }\n\n    if (user[0].password !== password) {\n      return { errorMessage: \"Senha Inválida\" };\n    } else {\n      return {\n        user: {\n          id: user[0].id,\n          name: user[0].name,\n          username: user[0].username,\n        },\n      };\n    }\n  }\n}\n"
+        }
+    ]
+}

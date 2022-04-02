@@ -1,0 +1,298 @@
+{
+    "sourceFile": "src/__tests__/testsIntegration/User.test.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 70,
+            "patches": [
+                {
+                    "date": 1645391011794,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1645391038369,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,11 +1,11 @@\n import request from \"supertest\";\n import { app } from \"../../app\";\n-\n+const mockUser = {\n+  name: \"Henrique\",\n+  username: \"test\",\n+  email: \"test@email.com\",\n+  password: \"123456789\",\n+};\n describe(\"User\", () => {\n-  request(app).post(\"/user\").send({\n-    name: \"Henrique\",\n-    username: \"test\",\n-    email: \"test@email.com\",\n-    password: \"123456789\",\n-  });\n+  request(app).post(\"/user\").send(mockUser);\n });\n"
+                },
+                {
+                    "date": 1645391191419,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,11 +1,13 @@\n import request from \"supertest\";\n import { app } from \"../../app\";\n+\n const mockUser = {\n   name: \"Henrique\",\n   username: \"test\",\n   email: \"test@email.com\",\n   password: \"123456789\",\n };\n+\n describe(\"User\", () => {\n   request(app).post(\"/user\").send(mockUser);\n });\n"
+                },
+                {
+                    "date": 1645391721544,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,13 +1,14 @@\n import request from \"supertest\";\n import { app } from \"../../app\";\n+import createConnection from \"../../database\";\n \n const mockUser = {\n   name: \"Henrique\",\n   username: \"test\",\n   email: \"test@email.com\",\n   password: \"123456789\",\n };\n \n-describe(\"User\", () => {\n+describe(\"User\", async () => {\n   request(app).post(\"/user\").send(mockUser);\n });\n"
+                },
+                {
+                    "date": 1645391827246,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,6 +9,11 @@\n   password: \"123456789\",\n };\n \n describe(\"User\", async () => {\n+  beforeAll(async () => {\n+    const connection = await createConnection();\n+    await connection.runMigrations();\n+  });\n+\n   request(app).post(\"/user\").send(mockUser);\n });\n"
+                },
+                {
+                    "date": 1645391959874,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,6 +14,10 @@\n     const connection = await createConnection();\n     await connection.runMigrations();\n   });\n \n-  request(app).post(\"/user\").send(mockUser);\n+  it(\"should be able to create a new user\", async () => {\n+    const response = await request(app).post(\"/user\").send(mockUser);\n+\n+    expect(response.status).toBe(201);\n+  });\n });\n"
+                },
+                {
+                    "date": 1645392893386,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n   email: \"test@email.com\",\n   password: \"123456789\",\n };\n \n-describe(\"User\", async () => {\n+describe(\"User\", () => {\n   beforeAll(async () => {\n     const connection = await createConnection();\n     await connection.runMigrations();\n   });\n"
+                },
+                {
+                    "date": 1645400697631,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,7 @@\n import request from \"supertest\";\n import { app } from \"../../app\";\n+import { Users } from \"../entities/User\";\n import createConnection from \"../../database\";\n \n const mockUser = {\n   name: \"Henrique\",\n@@ -11,8 +12,9 @@\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n     const connection = await createConnection();\n+    await connection.createEntityManager(Users);\n     await connection.runMigrations();\n   });\n \n   it(\"should be able to create a new user\", async () => {\n"
+                },
+                {
+                    "date": 1645400722304,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n import request from \"supertest\";\n import { app } from \"../../app\";\n-import { Users } from \"../entities/User\";\n+import { Users } from \"..database/entities/User\";\n import createConnection from \"../../database\";\n \n const mockUser = {\n   name: \"Henrique\",\n"
+                },
+                {
+                    "date": 1645400755126,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n import request from \"supertest\";\n import { app } from \"../../app\";\n-import { Users } from \"..database/entities/User\";\n+import { Users } from \"../../database/entities/User\";\n import createConnection from \"../../database\";\n \n const mockUser = {\n   name: \"Henrique\",\n"
+                },
+                {
+                    "date": 1645400768237,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,9 @@\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n     const connection = await createConnection();\n-    await connection.createEntityManager(Users);\n+    await connection.createEntityManager();\n     await connection.runMigrations();\n   });\n \n   it(\"should be able to create a new user\", async () => {\n"
+                },
+                {
+                    "date": 1645401161735,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,8 @@\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n     const connection = await createConnection();\n-    await connection.createEntityManager();\n     await connection.runMigrations();\n   });\n \n   it(\"should be able to create a new user\", async () => {\n"
+                },
+                {
+                    "date": 1645401259907,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,10 +15,10 @@\n     const connection = await createConnection();\n     await connection.runMigrations();\n   });\n \n-  it(\"should be able to create a new user\", async () => {\n+  it(\"should not be able to create a existent user\", async () => {\n     const response = await request(app).post(\"/user\").send(mockUser);\n \n-    expect(response.status).toBe(201);\n+    expect(response.status).toBe(400);\n   });\n });\n"
+                },
+                {
+                    "date": 1645401435336,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,7 +18,7 @@\n \n   it(\"should not be able to create a existent user\", async () => {\n     const response = await request(app).post(\"/user\").send(mockUser);\n \n-    expect(response.status).toBe(400);\n+    expect(response.status).toBe(201);\n   });\n });\n"
+                },
+                {
+                    "date": 1645402206169,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,8 @@\n import request from \"supertest\";\n import { app } from \"../../app\";\n import { Users } from \"../../database/entities/User\";\n-import createConnection from \"../../database\";\n+import connection from \"../../database\";\n \n const mockUser = {\n   name: \"Henrique\",\n   username: \"test\",\n@@ -11,10 +11,9 @@\n };\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n-    const connection = await createConnection();\n-    await connection.runMigrations();\n+    await connection;\n   });\n \n   it(\"should not be able to create a existent user\", async () => {\n     const response = await request(app).post(\"/user\").send(mockUser);\n"
+                },
+                {
+                    "date": 1645402225033,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,11 +11,18 @@\n };\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n-    await connection;\n+    await connection.create();\n   });\n+  afterAll(async () => {\n+    await connection.close();\n+  });\n \n+  beforeEach(async () => {\n+    await connection.clear();\n+  });\n+\n   it(\"should not be able to create a existent user\", async () => {\n     const response = await request(app).post(\"/user\").send(mockUser);\n \n     expect(response.status).toBe(201);\n"
+                },
+                {
+                    "date": 1645402395792,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,6 @@\n import request from \"supertest\";\n import { app } from \"../../app\";\n-import { Users } from \"../../database/entities/User\";\n import connection from \"../../database\";\n \n const mockUser = {\n   name: \"Henrique\",\n"
+                },
+                {
+                    "date": 1645402534852,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,8 +10,9 @@\n };\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n+    await connection.runMigrations();\n     await connection.create();\n   });\n   afterAll(async () => {\n     await connection.close();\n"
+                },
+                {
+                    "date": 1645402728657,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,9 +10,8 @@\n };\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n-    await connection.runMigrations();\n     await connection.create();\n   });\n   afterAll(async () => {\n     await connection.close();\n"
+                },
+                {
+                    "date": 1645402851153,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,8 @@\n import request from \"supertest\";\n import { app } from \"../../app\";\n-import connection from \"../../database\";\n+import { Users } from \"../../database/entities/User\";\n+import createConnection from \"../../database\";\n \n const mockUser = {\n   name: \"Henrique\",\n   username: \"test\",\n@@ -10,15 +11,18 @@\n };\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n-    await connection.create();\n+    const connection = await createConnection();\n+    await connection.runMigrations();\n   });\n   afterAll(async () => {\n+    const connection = await createConnection();\n     await connection.close();\n   });\n \n   beforeEach(async () => {\n+    const connection = await createConnection();\n     await connection.clear();\n   });\n \n   it(\"should not be able to create a existent user\", async () => {\n"
+                },
+                {
+                    "date": 1645402951601,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,9 @@\n import request from \"supertest\";\n import { app } from \"../../app\";\n import { Users } from \"../../database/entities/User\";\n import createConnection from \"../../database\";\n+import { getConnection } from 'typeorm';\n \n const mockUser = {\n   name: \"Henrique\",\n   username: \"test\",\n@@ -20,10 +21,16 @@\n     await connection.close();\n   });\n \n   beforeEach(async () => {\n-    const connection = await createConnection();\n-    await connection.clear();\n+    const connection = getConnection();\n+    const entities = connection.entityMetadatas;\n+\n+    entities.forEach(async (entity) => {\n+      const repository = connection.getRepository(entity.name);\n+      await repository.query(`DELETE FROM ${entity.tableName}`);\n+    });\n+  },\n   });\n \n   it(\"should not be able to create a existent user\", async () => {\n     const response = await request(app).post(\"/user\").send(mockUser);\n"
+                },
+                {
+                    "date": 1645402960574,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -29,10 +29,10 @@\n       const repository = connection.getRepository(entity.name);\n       await repository.query(`DELETE FROM ${entity.tableName}`);\n     });\n   },\n-  });\n \n+\n   it(\"should not be able to create a existent user\", async () => {\n     const response = await request(app).post(\"/user\").send(mockUser);\n \n     expect(response.status).toBe(201);\n"
+                },
+                {
+                    "date": 1645403003221,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -28,9 +28,9 @@\n     entities.forEach(async (entity) => {\n       const repository = connection.getRepository(entity.name);\n       await repository.query(`DELETE FROM ${entity.tableName}`);\n     });\n-  },\n+  };\n \n \n   it(\"should not be able to create a existent user\", async () => {\n     const response = await request(app).post(\"/user\").send(mockUser);\n"
+                },
+                {
+                    "date": 1645403029942,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,9 @@\n import request from \"supertest\";\n import { app } from \"../../app\";\n import { Users } from \"../../database/entities/User\";\n import createConnection from \"../../database\";\n-import { getConnection } from 'typeorm';\n+import { getConnection } from \"typeorm\";\n \n const mockUser = {\n   name: \"Henrique\",\n   username: \"test\",\n@@ -28,11 +28,10 @@\n     entities.forEach(async (entity) => {\n       const repository = connection.getRepository(entity.name);\n       await repository.query(`DELETE FROM ${entity.tableName}`);\n     });\n-  };\n+  });\n \n-\n   it(\"should not be able to create a existent user\", async () => {\n     const response = await request(app).post(\"/user\").send(mockUser);\n \n     expect(response.status).toBe(201);\n"
+                },
+                {
+                    "date": 1645403084889,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,10 +12,9 @@\n };\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n-    const connection = await createConnection();\n-    await connection.runMigrations();\n+    await createConnection();\n   });\n   afterAll(async () => {\n     const connection = await createConnection();\n     await connection.close();\n"
+                },
+                {
+                    "date": 1645403334202,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,10 @@\n };\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n-    await createConnection();\n+    const connection = await createConnection();\n+    await connection.runMigrations();\n   });\n   afterAll(async () => {\n     const connection = await createConnection();\n     await connection.close();\n"
+                },
+                {
+                    "date": 1645403400504,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,8 +17,9 @@\n     await connection.runMigrations();\n   });\n   afterAll(async () => {\n     const connection = await createConnection();\n+    connection.dropDatabase();\n     await connection.close();\n   });\n \n   beforeEach(async () => {\n"
+                },
+                {
+                    "date": 1645403444393,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,9 +17,9 @@\n     await connection.runMigrations();\n   });\n   afterAll(async () => {\n     const connection = await createConnection();\n-    connection.dropDatabase();\n+    await connection.dropDatabase();\n     await connection.close();\n   });\n \n   beforeEach(async () => {\n"
+                },
+                {
+                    "date": 1645403556387,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,8 +13,9 @@\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n     const connection = await createConnection();\n+    connection.createEntityManager();\n     await connection.runMigrations();\n   });\n   afterAll(async () => {\n     const connection = await createConnection();\n"
+                },
+                {
+                    "date": 1645403763484,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,13 +18,13 @@\n     await connection.runMigrations();\n   });\n   afterAll(async () => {\n     const connection = await createConnection();\n-    await connection.dropDatabase();\n+    await connection.\n     await connection.close();\n   });\n \n-  beforeEach(async () => {\n+  afterEach(async () => {\n     const connection = getConnection();\n     const entities = connection.entityMetadatas;\n \n     entities.forEach(async (entity) => {\n"
+                },
+                {
+                    "date": 1645403780087,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,6 @@\n import request from \"supertest\";\n import { app } from \"../../app\";\n-import { Users } from \"../../database/entities/User\";\n import createConnection from \"../../database\";\n import { getConnection } from \"typeorm\";\n \n const mockUser = {\n@@ -18,9 +17,8 @@\n     await connection.runMigrations();\n   });\n   afterAll(async () => {\n     const connection = await createConnection();\n-    await connection.\n     await connection.close();\n   });\n \n   afterEach(async () => {\n"
+                },
+                {
+                    "date": 1645403863162,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,10 +4,10 @@\n import { getConnection } from \"typeorm\";\n \n const mockUser = {\n   name: \"Henrique\",\n-  username: \"test\",\n-  email: \"test@email.com\",\n+  username: \"test2\",\n+  email: \"test2@email.com\",\n   password: \"123456789\",\n };\n \n describe(\"User\", () => {\n"
+                },
+                {
+                    "date": 1645403990113,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,8 @@\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n     const connection = await createConnection();\n-    connection.createEntityManager();\n     await connection.runMigrations();\n   });\n   afterAll(async () => {\n     const connection = await createConnection();\n"
+                },
+                {
+                    "date": 1645404972915,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,22 +14,23 @@\n   beforeAll(async () => {\n     const connection = await createConnection();\n     await connection.runMigrations();\n   });\n+\n   afterAll(async () => {\n     const connection = await createConnection();\n     await connection.close();\n   });\n \n-  afterEach(async () => {\n-    const connection = getConnection();\n-    const entities = connection.entityMetadatas;\n+  // afterEach(async () => {\n+  //   const connection = getConnection();\n+  //   const entities = connection.entityMetadatas;\n \n-    entities.forEach(async (entity) => {\n-      const repository = connection.getRepository(entity.name);\n-      await repository.query(`DELETE FROM ${entity.tableName}`);\n-    });\n-  });\n+  //   entities.forEach(async (entity) => {\n+  //     const repository = connection.getRepository(entity.name);\n+  //     await repository.query(`DELETE FROM ${entity.tableName}`);\n+  //   });\n+  // });\n \n   it(\"should not be able to create a existent user\", async () => {\n     const response = await request(app).post(\"/user\").send(mockUser);\n \n"
+                },
+                {
+                    "date": 1645404982585,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,7 @@\n import request from \"supertest\";\n import { app } from \"../../app\";\n import createConnection from \"../../database\";\n-import { getConnection } from \"typeorm\";\n \n const mockUser = {\n   name: \"Henrique\",\n   username: \"test2\",\n"
+                },
+                {
+                    "date": 1645405177961,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,13 +14,8 @@\n     const connection = await createConnection();\n     await connection.runMigrations();\n   });\n \n-  afterAll(async () => {\n-    const connection = await createConnection();\n-    await connection.close();\n-  });\n-\n   // afterEach(async () => {\n   //   const connection = getConnection();\n   //   const entities = connection.entityMetadatas;\n \n"
+                },
+                {
+                    "date": 1645406496506,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,21 +13,16 @@\n   beforeAll(async () => {\n     const connection = await createConnection();\n     await connection.runMigrations();\n   });\n+  it(\"should be able to create a new user\", async () => {\n+    const response = await request(app).post(\"/user\").send(mockUser);\n \n-  // afterEach(async () => {\n-  //   const connection = getConnection();\n-  //   const entities = connection.entityMetadatas;\n+    expect(response.status).toBe(201);\n+  });\n \n-  //   entities.forEach(async (entity) => {\n-  //     const repository = connection.getRepository(entity.name);\n-  //     await repository.query(`DELETE FROM ${entity.tableName}`);\n-  //   });\n-  // });\n-\n   it(\"should not be able to create a existent user\", async () => {\n     const response = await request(app).post(\"/user\").send(mockUser);\n \n-    expect(response.status).toBe(201);\n+    expect(response.status).toBe(400);\n   });\n });\n"
+                },
+                {
+                    "date": 1645406584572,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,8 +13,12 @@\n   beforeAll(async () => {\n     const connection = await createConnection();\n     await connection.runMigrations();\n   });\n+  afterAll(async async ()=>{\n+    const connection = await createConnection();\n+    await connection.close();\n+  })\n   it(\"should be able to create a new user\", async () => {\n     const response = await request(app).post(\"/user\").send(mockUser);\n \n     expect(response.status).toBe(201);\n"
+                },
+                {
+                    "date": 1645406590787,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,12 +13,13 @@\n   beforeAll(async () => {\n     const connection = await createConnection();\n     await connection.runMigrations();\n   });\n-  afterAll(async async ()=>{\n+  afterAll(async () => {\n     const connection = await createConnection();\n     await connection.close();\n-  })\n+  });\n+\n   it(\"should be able to create a new user\", async () => {\n     const response = await request(app).post(\"/user\").send(mockUser);\n \n     expect(response.status).toBe(201);\n"
+                },
+                {
+                    "date": 1645406628394,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,10 +24,10 @@\n \n     expect(response.status).toBe(201);\n   });\n \n-  it(\"should not be able to create a existent user\", async () => {\n-    const response = await request(app).post(\"/user\").send(mockUser);\n+  // it(\"should not be able to create a existent user\", async () => {\n+  //   const response = await request(app).post(\"/user\").send(mockUser);\n \n-    expect(response.status).toBe(400);\n-  });\n+  //   expect(response.status).toBe(400);\n+  // });\n });\n"
+                },
+                {
+                    "date": 1645406868230,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,8 +15,9 @@\n     await connection.runMigrations();\n   });\n   afterAll(async () => {\n     const connection = await createConnection();\n+    await connection.dropDatabase();\n     await connection.close();\n   });\n \n   it(\"should be able to create a new user\", async () => {\n"
+                },
+                {
+                    "date": 1645407047318,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,9 +11,12 @@\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n     const connection = await createConnection();\n-    await connection.runMigrations();\n+    const migrations = await connection.showMigrations();\n+    if (!migrations) {\n+      await connection.runMigrations();\n+    }\n   });\n   afterAll(async () => {\n     const connection = await createConnection();\n     await connection.dropDatabase();\n"
+                },
+                {
+                    "date": 1645407099293,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,8 +19,9 @@\n   });\n   afterAll(async () => {\n     const connection = await createConnection();\n     await connection.dropDatabase();\n+\n     await connection.close();\n   });\n \n   it(\"should be able to create a new user\", async () => {\n"
+                },
+                {
+                    "date": 1645407272921,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,6 @@\n import request from \"supertest\";\n+import { getConnection } from \"typeorm\";\n import { app } from \"../../app\";\n import createConnection from \"../../database\";\n \n const mockUser = {\n@@ -17,14 +18,24 @@\n       await connection.runMigrations();\n     }\n   });\n   afterAll(async () => {\n-    const connection = await createConnection();\n+    const connection = await getConnection();\n     await connection.dropDatabase();\n \n     await connection.close();\n   });\n \n+  beforeEach(async () => {\n+    const connection = getConnection();\n+    const entities = connection.entityMetadatas;\n+\n+    entities.forEach(async (entity) => {\n+      const repository = connection.getRepository(entity.name);\n+      await repository.query(`DELETE FROM ${entity.tableName}`);\n+    });\n+  });\n+\n   it(\"should be able to create a new user\", async () => {\n     const response = await request(app).post(\"/user\").send(mockUser);\n \n     expect(response.status).toBe(201);\n"
+                },
+                {
+                    "date": 1645407280796,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,9 +18,9 @@\n       await connection.runMigrations();\n     }\n   });\n   afterAll(async () => {\n-    const connection = await getConnection();\n+    const connection = getConnection();\n     await connection.dropDatabase();\n \n     await connection.close();\n   });\n"
+                },
+                {
+                    "date": 1645407312401,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -40,10 +40,10 @@\n \n     expect(response.status).toBe(201);\n   });\n \n-  // it(\"should not be able to create a existent user\", async () => {\n-  //   const response = await request(app).post(\"/user\").send(mockUser);\n+  it(\"should not be able to create a existent user\", async () => {\n+    const response = await request(app).post(\"/user\").send(mockUser);\n \n-  //   expect(response.status).toBe(400);\n-  // });\n+    expect(response.status).toBe(400);\n+  });\n });\n"
+                },
+                {
+                    "date": 1645407344599,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -40,10 +40,10 @@\n \n     expect(response.status).toBe(201);\n   });\n \n-  it(\"should not be able to create a existent user\", async () => {\n-    const response = await request(app).post(\"/user\").send(mockUser);\n+  // it(\"should not be able to create a existent user\", async () => {\n+  //   const response = await request(app).post(\"/user\").send(mockUser);\n \n-    expect(response.status).toBe(400);\n-  });\n+  //   expect(response.status).toBe(400);\n+  // });\n });\n"
+                },
+                {
+                    "date": 1645407364697,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -32,18 +32,13 @@\n     entities.forEach(async (entity) => {\n       const repository = connection.getRepository(entity.name);\n       await repository.query(`DELETE FROM ${entity.tableName}`);\n     });\n+    await connection.close();\n   });\n \n   it(\"should be able to create a new user\", async () => {\n     const response = await request(app).post(\"/user\").send(mockUser);\n \n     expect(response.status).toBe(201);\n   });\n-\n-  // it(\"should not be able to create a existent user\", async () => {\n-  //   const response = await request(app).post(\"/user\").send(mockUser);\n-\n-  //   expect(response.status).toBe(400);\n-  // });\n });\n"
+                },
+                {
+                    "date": 1645407696991,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -32,9 +32,8 @@\n     entities.forEach(async (entity) => {\n       const repository = connection.getRepository(entity.name);\n       await repository.query(`DELETE FROM ${entity.tableName}`);\n     });\n-    await connection.close();\n   });\n \n   it(\"should be able to create a new user\", async () => {\n     const response = await request(app).post(\"/user\").send(mockUser);\n"
+                },
+                {
+                    "date": 1645407768255,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,9 +13,9 @@\n describe(\"User\", () => {\n   beforeAll(async () => {\n     const connection = await createConnection();\n     const migrations = await connection.showMigrations();\n-    if (!migrations) {\n+    if (migrations) {\n       await connection.runMigrations();\n     }\n   });\n   afterAll(async () => {\n"
+                },
+                {
+                    "date": 1645407828180,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,13 +11,9 @@\n };\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n-    const connection = await createConnection();\n-    const migrations = await connection.showMigrations();\n-    if (migrations) {\n-      await connection.runMigrations();\n-    }\n+    await createConnection();\n   });\n   afterAll(async () => {\n     const connection = getConnection();\n     await connection.dropDatabase();\n"
+                },
+                {
+                    "date": 1645407948743,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,12 +11,14 @@\n };\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n-    await createConnection();\n+    const connection = await createConnection();\n+    if (connection.migrations) console.log(\"tem\");\n   });\n   afterAll(async () => {\n     const connection = getConnection();\n+\n     await connection.dropDatabase();\n \n     await connection.close();\n   });\n"
+                },
+                {
+                    "date": 1645408025142,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,9 @@\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n     const connection = await createConnection();\n-    if (connection.migrations) console.log(\"tem\");\n+    if (connection.migrations) console.log(`tem ${connection.migrations}`);\n   });\n   afterAll(async () => {\n     const connection = getConnection();\n \n"
+                },
+                {
+                    "date": 1645408040788,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,8 +13,9 @@\n describe(\"User\", () => {\n   beforeAll(async () => {\n     const connection = await createConnection();\n     if (connection.migrations) console.log(`tem ${connection.migrations}`);\n+    else console.log(\"não tem\");\n   });\n   afterAll(async () => {\n     const connection = getConnection();\n \n"
+                },
+                {
+                    "date": 1645408326243,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,10 +12,11 @@\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n     const connection = await createConnection();\n-    if (connection.migrations) console.log(`tem ${connection.migrations}`);\n-    else console.log(\"não tem\");\n+    connection.undoLastMigration();\n+    connection.undoLastMigration();\n+    connection.runMigrations();\n   });\n   afterAll(async () => {\n     const connection = getConnection();\n \n"
+                },
+                {
+                    "date": 1645408488394,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,10 +12,8 @@\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n     const connection = await createConnection();\n-    connection.undoLastMigration();\n-    connection.undoLastMigration();\n     connection.runMigrations();\n   });\n   afterAll(async () => {\n     const connection = getConnection();\n"
+                },
+                {
+                    "date": 1645408774862,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,11 +16,8 @@\n     connection.runMigrations();\n   });\n   afterAll(async () => {\n     const connection = getConnection();\n-\n-    await connection.dropDatabase();\n-\n     await connection.close();\n   });\n \n   beforeEach(async () => {\n"
+                },
+                {
+                    "date": 1645408985212,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,9 +22,14 @@\n \n   beforeEach(async () => {\n     const connection = getConnection();\n     const entities = connection.entityMetadatas;\n+    const migrations = connection.migrations;\n \n+    migrations.forEach(async (migration) => {\n+      migration.down;\n+    });\n+\n     entities.forEach(async (entity) => {\n       const repository = connection.getRepository(entity.name);\n       await repository.query(`DELETE FROM ${entity.tableName}`);\n     });\n"
+                },
+                {
+                    "date": 1645409117484,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,8 +16,13 @@\n     connection.runMigrations();\n   });\n   afterAll(async () => {\n     const connection = getConnection();\n+    const migrations = connection.migrations;\n+\n+    migrations.forEach(async (migration) => {\n+      migration.down;\n+    });\n     await connection.close();\n   });\n \n   beforeEach(async () => {\n"
+                },
+                {
+                    "date": 1645409252211,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,10 +11,9 @@\n };\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n-    const connection = await createConnection();\n-    connection.runMigrations();\n+    await createConnection();\n   });\n   afterAll(async () => {\n     const connection = getConnection();\n     const migrations = connection.migrations;\n"
+                },
+                {
+                    "date": 1645409260721,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,11 +17,8 @@\n   afterAll(async () => {\n     const connection = getConnection();\n     const migrations = connection.migrations;\n \n-    migrations.forEach(async (migration) => {\n-      migration.down;\n-    });\n     await connection.close();\n   });\n \n   beforeEach(async () => {\n"
+                },
+                {
+                    "date": 1645409275901,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,22 +15,16 @@\n     await createConnection();\n   });\n   afterAll(async () => {\n     const connection = getConnection();\n-    const migrations = connection.migrations;\n \n     await connection.close();\n   });\n \n   beforeEach(async () => {\n     const connection = getConnection();\n     const entities = connection.entityMetadatas;\n-    const migrations = connection.migrations;\n \n-    migrations.forEach(async (migration) => {\n-      migration.down;\n-    });\n-\n     entities.forEach(async (entity) => {\n       const repository = connection.getRepository(entity.name);\n       await repository.query(`DELETE FROM ${entity.tableName}`);\n     });\n"
+                },
+                {
+                    "date": 1645409351742,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -19,18 +19,8 @@\n \n     await connection.close();\n   });\n \n-  beforeEach(async () => {\n-    const connection = getConnection();\n-    const entities = connection.entityMetadatas;\n-\n-    entities.forEach(async (entity) => {\n-      const repository = connection.getRepository(entity.name);\n-      await repository.query(`DELETE FROM ${entity.tableName}`);\n-    });\n-  });\n-\n   it(\"should be able to create a new user\", async () => {\n     const response = await request(app).post(\"/user\").send(mockUser);\n \n     expect(response.status).toBe(201);\n"
+                },
+                {
+                    "date": 1645409457922,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,10 +11,14 @@\n };\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n-    await createConnection();\n+    const connection = await createConnection();\n+    if (connection.entityMetadatas.length === 0) {\n+      await connection.runMigrations();\n+    }\n   });\n+\n   afterAll(async () => {\n     const connection = getConnection();\n \n     await connection.close();\n"
+                },
+                {
+                    "date": 1645409522807,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,12 @@\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n     const connection = await createConnection();\n-    if (connection.entityMetadatas.length === 0) {\n+    if (\n+      connection.entityMetadatas.length === 0 ||\n+      !(await connection.entityMetadatas)\n+    ) {\n       await connection.runMigrations();\n     }\n   });\n \n"
+                },
+                {
+                    "date": 1645409530596,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,9 +14,9 @@\n   beforeAll(async () => {\n     const connection = await createConnection();\n     if (\n       connection.entityMetadatas.length === 0 ||\n-      !(await connection.entityMetadatas)\n+      ! connection.entityMetadatas)\n     ) {\n       await connection.runMigrations();\n     }\n   });\n"
+                },
+                {
+                    "date": 1645409618611,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,14 +12,8 @@\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n     const connection = await createConnection();\n-    if (\n-      connection.entityMetadatas.length === 0 ||\n-      ! connection.entityMetadatas)\n-    ) {\n-      await connection.runMigrations();\n-    }\n   });\n \n   afterAll(async () => {\n     const connection = getConnection();\n"
+                },
+                {
+                    "date": 1645409643213,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,8 +12,9 @@\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n     const connection = await createConnection();\n+    await connection.runMigrations();\n   });\n \n   afterAll(async () => {\n     const connection = getConnection();\n"
+                },
+                {
+                    "date": 1645409703725,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,8 +12,9 @@\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n     const connection = await createConnection();\n+    console.log(connection.entityMetadatas);\n     await connection.runMigrations();\n   });\n \n   afterAll(async () => {\n"
+                },
+                {
+                    "date": 1645409821506,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,9 @@\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n     const connection = await createConnection();\n-    console.log(connection.entityMetadatas);\n+    console.log(connection.entityMetadatas[0].connection.migrations);\n     await connection.runMigrations();\n   });\n \n   afterAll(async () => {\n"
+                },
+                {
+                    "date": 1645409902033,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,9 +12,8 @@\n \n describe(\"User\", () => {\n   beforeAll(async () => {\n     const connection = await createConnection();\n-    console.log(connection.entityMetadatas[0].connection.migrations);\n     await connection.runMigrations();\n   });\n \n   afterAll(async () => {\n"
+                }
+            ],
+            "date": 1645391011794,
+            "name": "Commit-0",
+            "content": "import request from \"supertest\";\nimport { app } from \"../../app\";\n\ndescribe(\"User\", () => {\n  request(app).post(\"/user\").send({\n    name: \"Henrique\",\n    username: \"test\",\n    email: \"test@email.com\",\n    password: \"123456789\",\n  });\n});\n"
+        }
+    ]
+}

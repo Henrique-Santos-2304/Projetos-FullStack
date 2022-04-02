@@ -1,0 +1,254 @@
+{
+    "sourceFile": "src/database/index.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 59,
+            "patches": [
+                {
+                    "date": 1645391460835,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1645391539611,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,6 +2,10 @@\n \n export default async () => {\n   const defaultOptions = await getConnectionOptions();\n \n-  return createConnection();\n+  return createConnection(\n+    Object.assign(defaultOptions, {\n+      database: process.env.NODE_ENV === \"test\" ? \"\" : \"\",\n+    })\n+  );\n };\n"
+                },
+                {
+                    "date": 1645391648427,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,8 +4,9 @@\n   const defaultOptions = await getConnectionOptions();\n \n   return createConnection(\n     Object.assign(defaultOptions, {\n-      database: process.env.NODE_ENV === \"test\" ? \"\" : \"\",\n+      database:\n+        process.env.NODE_ENV === \"test\" ? \"src/database/datanase.sqlite\" : \"\",\n     })\n   );\n };\n"
+                },
+                {
+                    "date": 1645391656596,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,8 +5,10 @@\n \n   return createConnection(\n     Object.assign(defaultOptions, {\n       database:\n-        process.env.NODE_ENV === \"test\" ? \"src/database/datanase.sqlite\" : \"\",\n+        process.env.NODE_ENV === \"test\"\n+          ? \"src/database/datanase.sqlite\"\n+          : defaultOptions.database,\n     })\n   );\n };\n"
+                },
+                {
+                    "date": 1645391661853,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,9 +6,9 @@\n   return createConnection(\n     Object.assign(defaultOptions, {\n       database:\n         process.env.NODE_ENV === \"test\"\n-          ? \"src/database/datanase.sqlite\"\n+          ? \"src/database/database.sqlite\"\n           : defaultOptions.database,\n     })\n   );\n };\n"
+                },
+                {
+                    "date": 1645391673835,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,9 +6,9 @@\n   return createConnection(\n     Object.assign(defaultOptions, {\n       database:\n         process.env.NODE_ENV === \"test\"\n-          ? \"src/database/database.sqlite\"\n+          ? \"src/database/database.test.sqlite\"\n           : defaultOptions.database,\n     })\n   );\n };\n"
+                },
+                {
+                    "date": 1645392534475,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,9 +6,9 @@\n   return createConnection(\n     Object.assign(defaultOptions, {\n       database:\n         process.env.NODE_ENV === \"test\"\n-          ? \"src/database/database.test.sqlite\"\n+          ? \"nutridbtest\"\n           : defaultOptions.database,\n     })\n   );\n };\n"
+                },
+                {
+                    "date": 1645392586638,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,7 +8,9 @@\n       database:\n         process.env.NODE_ENV === \"test\"\n           ? \"nutridbtest\"\n           : defaultOptions.database,\n+      username:\n+        process.env.NODE_ENV === \"test\" ? \"test\" : defaultOptions.username,\n     })\n   );\n };\n"
+                },
+                {
+                    "date": 1645392714913,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,15 +2,16 @@\n \n export default async () => {\n   const defaultOptions = await getConnectionOptions();\n \n-  return createConnection(\n-    Object.assign(defaultOptions, {\n-      database:\n-        process.env.NODE_ENV === \"test\"\n-          ? \"nutridbtest\"\n-          : defaultOptions.database,\n-      username:\n-        process.env.NODE_ENV === \"test\" ? \"test\" : defaultOptions.username,\n-    })\n-  );\n+  if (process.env.NODE_ENV === \"test\") {\n+    return createConnection(\n+      Object.assign(defaultOptions, {\n+        database: \"nutridbtest\",\n+        username: \"test\",\n+        password: \"test\",\n+      })\n+    );\n+  } else {\n+    return createConnection();\n+  }\n };\n"
+                },
+                {
+                    "date": 1645392844501,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,10 @@\n \n   if (process.env.NODE_ENV === \"test\") {\n     return createConnection(\n       Object.assign(defaultOptions, {\n-        database: \"nutridbtest\",\n+        type: \"sqlite\",\n+        database: \"/src/database/database.test.sqlite\",\n         username: \"test\",\n         password: \"test\",\n       })\n     );\n"
+                },
+                {
+                    "date": 1645393006299,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,11 +6,9 @@\n   if (process.env.NODE_ENV === \"test\") {\n     return createConnection(\n       Object.assign(defaultOptions, {\n         type: \"sqlite\",\n-        database: \"/src/database/database.test.sqlite\",\n-        username: \"test\",\n-        password: \"test\",\n+        database: \"./src/database/database.test.sqlite\",\n       })\n     );\n   } else {\n     return createConnection();\n"
+                },
+                {
+                    "date": 1645393265155,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,8 +7,9 @@\n     return createConnection(\n       Object.assign(defaultOptions, {\n         type: \"sqlite\",\n         database: \"./src/database/database.test.sqlite\",\n+        cli: { migrationsDir: \"./src/database/migrations\" },\n       })\n     );\n   } else {\n     return createConnection();\n"
+                },
+                {
+                    "date": 1645393311298,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,11 +5,11 @@\n \n   if (process.env.NODE_ENV === \"test\") {\n     return createConnection(\n       Object.assign(defaultOptions, {\n-        type: \"sqlite\",\n-        database: \"./src/database/database.test.sqlite\",\n-        cli: { migrationsDir: \"./src/database/migrations\" },\n+        database: \"nutridbtest\",\n+        username: \"test\",\n+        password: \"test\",\n       })\n     );\n   } else {\n     return createConnection();\n"
+                },
+                {
+                    "date": 1645393366613,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,9 +7,9 @@\n     return createConnection(\n       Object.assign(defaultOptions, {\n         database: \"nutridbtest\",\n         username: \"test\",\n-        password: \"test\",\n+        password: \"tests\",\n       })\n     );\n   } else {\n     return createConnection();\n"
+                },
+                {
+                    "date": 1645400899627,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,11 +5,10 @@\n \n   if (process.env.NODE_ENV === \"test\") {\n     return createConnection(\n       Object.assign(defaultOptions, {\n-        database: \"nutridbtest\",\n-        username: \"test\",\n-        password: \"tests\",\n+        type: \"sqlite\",\n+        database: \"./src/database/database.test.sqlite\",\n       })\n     );\n   } else {\n     return createConnection();\n"
+                },
+                {
+                    "date": 1645401556708,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,8 +7,9 @@\n     return createConnection(\n       Object.assign(defaultOptions, {\n         type: \"sqlite\",\n         database: \"./src/database/database.test.sqlite\",\n+        cli: { migrations: \"./src/database/migrations\" },\n       })\n     );\n   } else {\n     return createConnection();\n"
+                },
+                {
+                    "date": 1645401568971,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,9 +7,9 @@\n     return createConnection(\n       Object.assign(defaultOptions, {\n         type: \"sqlite\",\n         database: \"./src/database/database.test.sqlite\",\n-        cli: { migrations: \"./src/database/migrations\" },\n+        cli: { migrations: \"./src/database/migrations/*.ts\" },\n       })\n     );\n   } else {\n     return createConnection();\n"
+                },
+                {
+                    "date": 1645401582649,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,9 +7,9 @@\n     return createConnection(\n       Object.assign(defaultOptions, {\n         type: \"sqlite\",\n         database: \"./src/database/database.test.sqlite\",\n-        cli: { migrations: \"./src/database/migrations/*.ts\" },\n+        cli: { migrationsDir: \"./src/database/migrations\" },\n       })\n     );\n   } else {\n     return createConnection();\n"
+                },
+                {
+                    "date": 1645401645706,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,11 +5,11 @@\n \n   if (process.env.NODE_ENV === \"test\") {\n     return createConnection(\n       Object.assign(defaultOptions, {\n-        type: \"sqlite\",\n-        database: \"./src/database/database.test.sqlite\",\n-        cli: { migrationsDir: \"./src/database/migrations\" },\n+        database: \"nutridbtest\",\n+        username: \"test\",\n+        password: \"tests\",\n       })\n     );\n   } else {\n     return createConnection();\n"
+                },
+                {
+                    "date": 1645402102334,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,17 +1,36 @@\n import { createConnection, getConnectionOptions } from \"typeorm\";\n \n export default async () => {\n-  const defaultOptions = await getConnectionOptions();\n \n-  if (process.env.NODE_ENV === \"test\") {\n-    return createConnection(\n-      Object.assign(defaultOptions, {\n-        database: \"nutridbtest\",\n-        username: \"test\",\n-        password: \"tests\",\n-      })\n-    );\n-  } else {\n-    return createConnection();\n-  }\n+  async create(){\n+    await createConnection();\n+  },\n+\n+  async close(){\n+    await getConnection().close(); \n+  },\n+\n+  async clear(){\n+    const connection = getConnection();\n+    const entities = connection.entityMetadatas;\n+\n+    entities.forEach(async (entity) => {\n+      const repository = connection.getRepository(entity.name);\n+      await repository.query(`DELETE FROM ${entity.tableName}`);\n+    });\n+  },\n+\n+  // const defaultOptions = await getConnectionOptions();\n+\n+  // if (process.env.NODE_ENV === \"test\") {\n+  //   return createConnection(\n+  //     Object.assign(defaultOptions, {\n+  //       database: \"nutridbtest\",\n+  //       username: \"test\",\n+  //       password: \"tests\",\n+  //     })\n+  //   );\n+  // } else {\n+  //   return createConnection();\n+  // }\n };\n"
+                },
+                {
+                    "date": 1645402131879,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n import { createConnection, getConnectionOptions } from \"typeorm\";\n \n-export default async () => {\n+export default connection () => {\n \n   async create(){\n     await createConnection();\n   },\n"
+                },
+                {
+                    "date": 1645402154275,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,7 @@\n import { createConnection, getConnectionOptions } from \"typeorm\";\n \n-export default connection () => {\n-\n+const connection = {\n   async create(){\n     await createConnection();\n   },\n \n@@ -18,8 +17,10 @@\n       const repository = connection.getRepository(entity.name);\n       await repository.query(`DELETE FROM ${entity.tableName}`);\n     });\n   },\n+};\n+export default connection;,\n \n   // const defaultOptions = await getConnectionOptions();\n \n   // if (process.env.NODE_ENV === \"test\") {\n@@ -32,5 +33,5 @@\n   //   );\n   // } else {\n   //   return createConnection();\n   // }\n-};\n+\n"
+                },
+                {
+                    "date": 1645402170057,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,16 +1,16 @@\n-import { createConnection, getConnectionOptions } from \"typeorm\";\n+import { createConnection, getConnection, getConnectionOptions } from \"typeorm\";\n \n const connection = {\n-  async create(){\n+  async create() {\n     await createConnection();\n   },\n \n-  async close(){\n-    await getConnection().close(); \n+  async close() {\n+    await getConnection().close();\n   },\n \n-  async clear(){\n+  async clear() {\n     const connection = getConnection();\n     const entities = connection.entityMetadatas;\n \n     entities.forEach(async (entity) => {\n@@ -18,20 +18,19 @@\n       await repository.query(`DELETE FROM ${entity.tableName}`);\n     });\n   },\n };\n-export default connection;,\n+export default connection;\n \n-  // const defaultOptions = await getConnectionOptions();\n+// const defaultOptions = await getConnectionOptions();\n \n-  // if (process.env.NODE_ENV === \"test\") {\n-  //   return createConnection(\n-  //     Object.assign(defaultOptions, {\n-  //       database: \"nutridbtest\",\n-  //       username: \"test\",\n-  //       password: \"tests\",\n-  //     })\n-  //   );\n-  // } else {\n-  //   return createConnection();\n-  // }\n-\n+// if (process.env.NODE_ENV === \"test\") {\n+//   return createConnection(\n+//     Object.assign(defaultOptions, {\n+//       database: \"nutridbtest\",\n+//       username: \"test\",\n+//       password: \"tests\",\n+//     })\n+//   );\n+// } else {\n+//   return createConnection();\n+// }\n"
+                },
+                {
+                    "date": 1645402496232,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,12 @@\n import { createConnection, getConnection, getConnectionOptions } from \"typeorm\";\n \n const connection = {\n+  async runMigrations() {\n+    const connections = createConnection();\n+\n+    await connections.runMigrations();\n+  },\n   async create() {\n     await createConnection();\n   },\n \n"
+                },
+                {
+                    "date": 1645402503338,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n const connection = {\n   async runMigrations() {\n     const connections = createConnection();\n \n-    await connections.runMigrations();\n+    await (await connections).runMigrations();\n   },\n   async create() {\n     await createConnection();\n   },\n"
+                },
+                {
+                    "date": 1645402517245,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n const connection = {\n   async runMigrations() {\n     const connections = createConnection();\n \n-    await (await connections).runMigrations();\n+    (await connections).runMigrations();\n   },\n   async create() {\n     await createConnection();\n   },\n"
+                },
+                {
+                    "date": 1645402525834,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,11 +1,9 @@\n import { createConnection, getConnection, getConnectionOptions } from \"typeorm\";\n \n const connection = {\n   async runMigrations() {\n-    const connections = createConnection();\n-\n-    (await connections).runMigrations();\n+    (await createConnection()).runMigrations();\n   },\n   async create() {\n     await createConnection();\n   },\n"
+                },
+                {
+                    "date": 1645402607067,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,21 @@\n   async runMigrations() {\n     (await createConnection()).runMigrations();\n   },\n   async create() {\n-    await createConnection();\n+    const defaultOptions = await getConnectionOptions();\n+\n+    if (process.env.NODE_ENV === \"test\") {\n+      return createConnection(\n+        Object.assign(defaultOptions, {\n+          database: \"nutridbtest\",\n+          username: \"test\",\n+          password: \"tests\",\n+        })\n+      );\n+    } else {\n+      return createConnection();\n+    }\n   },\n \n   async close() {\n     await getConnection().close();\n@@ -22,18 +34,4 @@\n     });\n   },\n };\n export default connection;\n-\n-// const defaultOptions = await getConnectionOptions();\n-\n-// if (process.env.NODE_ENV === \"test\") {\n-//   return createConnection(\n-//     Object.assign(defaultOptions, {\n-//       database: \"nutridbtest\",\n-//       username: \"test\",\n-//       password: \"tests\",\n-//     })\n-//   );\n-// } else {\n-//   return createConnection();\n-// }\n"
+                },
+                {
+                    "date": 1645402757671,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,37 +1,17 @@\n-import { createConnection, getConnection, getConnectionOptions } from \"typeorm\";\n+import { createConnection, getConnectionOptions } from \"typeorm\";\n \n-const connection = {\n-  async runMigrations() {\n-    (await createConnection()).runMigrations();\n-  },\n-  async create() {\n-    const defaultOptions = await getConnectionOptions();\n+export default async () => {\n+  const defaultOptions = await getConnectionOptions();\n \n-    if (process.env.NODE_ENV === \"test\") {\n-      return createConnection(\n-        Object.assign(defaultOptions, {\n-          database: \"nutridbtest\",\n-          username: \"test\",\n-          password: \"tests\",\n-        })\n-      );\n-    } else {\n-      return createConnection();\n-    }\n-  },\n-\n-  async close() {\n-    await getConnection().close();\n-  },\n-\n-  async clear() {\n-    const connection = getConnection();\n-    const entities = connection.entityMetadatas;\n-\n-    entities.forEach(async (entity) => {\n-      const repository = connection.getRepository(entity.name);\n-      await repository.query(`DELETE FROM ${entity.tableName}`);\n-    });\n-  },\n+  if (process.env.NODE_ENV === \"test\") {\n+    return createConnection(\n+      Object.assign(defaultOptions, {\n+        database: \"nutridbtest\",\n+        username: \"test\",\n+        password: \"tests\",\n+      })\n+    );\n+  } else {\n+    return createConnection();\n+  }\n };\n-export default connection;\n"
+                },
+                {
+                    "date": 1645403267036,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,8 +8,10 @@\n       Object.assign(defaultOptions, {\n         database: \"nutridbtest\",\n         username: \"test\",\n         password: \"tests\",\n+        entities: [\"src/__tests__/entities/*.ts\"],\n+        migrations: [\"src/__tests__/migrations/*.ts\"],\n       })\n     );\n   } else {\n     return createConnection();\n"
+                },
+                {
+                    "date": 1645404089076,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,17 +3,19 @@\n export default async () => {\n   const defaultOptions = await getConnectionOptions();\n \n   if (process.env.NODE_ENV === \"test\") {\n-    return createConnection(\n+    const connection = createConnection(\n       Object.assign(defaultOptions, {\n         database: \"nutridbtest\",\n         username: \"test\",\n         password: \"tests\",\n         entities: [\"src/__tests__/entities/*.ts\"],\n         migrations: [\"src/__tests__/migrations/*.ts\"],\n       })\n     );\n+    return connection;\n   } else {\n-    return createConnection();\n+    const connection = createConnection();\n+    return connection;\n   }\n };\n"
+                },
+                {
+                    "date": 1645404115956,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n export default async () => {\n   const defaultOptions = await getConnectionOptions();\n \n   if (process.env.NODE_ENV === \"test\") {\n-    const connection = createConnection(\n+    const connection = await createConnection(\n       Object.assign(defaultOptions, {\n         database: \"nutridbtest\",\n         username: \"test\",\n         password: \"tests\",\n@@ -14,8 +14,8 @@\n       })\n     );\n     return connection;\n   } else {\n-    const connection = createConnection();\n+    const connection = await createConnection();\n     return connection;\n   }\n };\n"
+                },
+                {
+                    "date": 1645404201644,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,19 +3,17 @@\n export default async () => {\n   const defaultOptions = await getConnectionOptions();\n \n   if (process.env.NODE_ENV === \"test\") {\n-    const connection = await createConnection(\n+    return await createConnection(\n       Object.assign(defaultOptions, {\n         database: \"nutridbtest\",\n         username: \"test\",\n         password: \"tests\",\n         entities: [\"src/__tests__/entities/*.ts\"],\n         migrations: [\"src/__tests__/migrations/*.ts\"],\n       })\n     );\n-    return connection;\n   } else {\n-    const connection = await createConnection();\n-    return connection;\n+    return await createConnection();\n   }\n };\n"
+                },
+                {
+                    "date": 1645404866915,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,13 +5,10 @@\n \n   if (process.env.NODE_ENV === \"test\") {\n     return await createConnection(\n       Object.assign(defaultOptions, {\n-        database: \"nutridbtest\",\n-        username: \"test\",\n-        password: \"tests\",\n-        entities: [\"src/__tests__/entities/*.ts\"],\n-        migrations: [\"src/__tests__/migrations/*.ts\"],\n+        type: \"sqlite\",\n+        database: \"./src/__tests__/databaseTest\",\n       })\n     );\n   } else {\n     return await createConnection();\n"
+                },
+                {
+                    "date": 1645404907802,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,8 +7,9 @@\n     return await createConnection(\n       Object.assign(defaultOptions, {\n         type: \"sqlite\",\n         database: \"./src/__tests__/databaseTest\",\n+        migrations: \"./src/__tests__/databaseTest/migrations\",\n       })\n     );\n   } else {\n     return await createConnection();\n"
+                },
+                {
+                    "date": 1645405025800,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,9 +7,9 @@\n     return await createConnection(\n       Object.assign(defaultOptions, {\n         type: \"sqlite\",\n         database: \"./src/__tests__/databaseTest\",\n-        migrations: \"./src/__tests__/databaseTest/migrations\",\n+        migrations: [\"./src/__tests__/databaseTest/migrations\"],\n       })\n     );\n   } else {\n     return await createConnection();\n"
+                },
+                {
+                    "date": 1645405117821,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,9 +6,9 @@\n   if (process.env.NODE_ENV === \"test\") {\n     return await createConnection(\n       Object.assign(defaultOptions, {\n         type: \"sqlite\",\n-        database: \"./src/__tests__/databaseTest\",\n+        database: \"./src/__tests__/databaseTest/database.test.sqlite\",\n         migrations: [\"./src/__tests__/databaseTest/migrations\"],\n       })\n     );\n   } else {\n"
+                },
+                {
+                    "date": 1645405738925,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,7 @@\n import { createConnection, getConnectionOptions } from \"typeorm\";\n+import { Meals } from \"../__tests__/databaseTest/entitiesTest/Meals\";\n+import { Users } from \"../__tests__/databaseTest/entitiesTest/User\";\n \n export default async () => {\n   const defaultOptions = await getConnectionOptions();\n \n@@ -7,9 +9,10 @@\n     return await createConnection(\n       Object.assign(defaultOptions, {\n         type: \"sqlite\",\n         database: \"./src/__tests__/databaseTest/database.test.sqlite\",\n-        migrations: [\"./src/__tests__/databaseTest/migrations\"],\n+        entities: [Users, Meals],\n+        logging: true,\n       })\n     );\n   } else {\n     return await createConnection();\n"
+                },
+                {
+                    "date": 1645405781666,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,16 +5,14 @@\n export default async () => {\n   const defaultOptions = await getConnectionOptions();\n \n   if (process.env.NODE_ENV === \"test\") {\n-    return await createConnection(\n-      Object.assign(defaultOptions, {\n-        type: \"sqlite\",\n-        database: \"./src/__tests__/databaseTest/database.test.sqlite\",\n-        entities: [Users, Meals],\n-        logging: true,\n-      })\n-    );\n+    return await createConnection({\n+      type: \"sqlite\",\n+      database: \"./src/__tests__/databaseTest/database.test.sqlite\",\n+      entities: [Users, Meals],\n+      logging: true,\n+    });\n   } else {\n     return await createConnection();\n   }\n };\n"
+                },
+                {
+                    "date": 1645405791272,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,10 +2,8 @@\n import { Meals } from \"../__tests__/databaseTest/entitiesTest/Meals\";\n import { Users } from \"../__tests__/databaseTest/entitiesTest/User\";\n \n export default async () => {\n-  const defaultOptions = await getConnectionOptions();\n-\n   if (process.env.NODE_ENV === \"test\") {\n     return await createConnection({\n       type: \"sqlite\",\n       database: \"./src/__tests__/databaseTest/database.test.sqlite\",\n"
+                },
+                {
+                    "date": 1645405903133,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,8 +7,9 @@\n     return await createConnection({\n       type: \"sqlite\",\n       database: \"./src/__tests__/databaseTest/database.test.sqlite\",\n       entities: [Users, Meals],\n+      migrations: [\"src/__tests__/databaseTest/migrations/*.ts\"]\n       logging: true,\n     });\n   } else {\n     return await createConnection();\n"
+                },
+                {
+                    "date": 1645405944276,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,9 +7,13 @@\n     return await createConnection({\n       type: \"sqlite\",\n       database: \"./src/__tests__/databaseTest/database.test.sqlite\",\n       entities: [Users, Meals],\n-      migrations: [\"src/__tests__/databaseTest/migrations/*.ts\"]\n+      migrations: [\"src/__tests__/databaseTest/migrations/*.ts\"],\n+      cli: {\n+        entitiesDir: \"src/__tests__/databaseTest/entities\",\n+        migrationsDir: \"src/__tests__/databaseTest/migrations\"\n+      }\n       logging: true,\n     });\n   } else {\n     return await createConnection();\n"
+                },
+                {
+                    "date": 1645405968304,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,12 +7,12 @@\n     return await createConnection({\n       type: \"sqlite\",\n       database: \"./src/__tests__/databaseTest/database.test.sqlite\",\n       entities: [Users, Meals],\n-      migrations: [\"src/__tests__/databaseTest/migrations/*.ts\"],\n+      migrations: [\"src/__tests__/databaseTest/migrationsTest/*.ts\"],\n       cli: {\n-        entitiesDir: \"src/__tests__/databaseTest/entities\",\n-        migrationsDir: \"src/__tests__/databaseTest/migrations\"\n+        entitiesDir: \"src/__tests__/databaseTest/entitiesTest\",\n+        migrationsDir: \"src/__tests__/databaseTest/migrationsTest\"\n       }\n       logging: true,\n     });\n   } else {\n"
+                },
+                {
+                    "date": 1645406001511,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,21 +1,23 @@\n import { createConnection, getConnectionOptions } from \"typeorm\";\n import { Meals } from \"../__tests__/databaseTest/entitiesTest/Meals\";\n import { Users } from \"../__tests__/databaseTest/entitiesTest/User\";\n \n+const optionsConnectiontest = {\n+  type: \"sqlite\",\n+  database: \"./src/__tests__/databaseTest/database.test.sqlite\",\n+  entities: [Users, Meals],\n+  migrations: [\"src/__tests__/databaseTest/migrationsTest/*.ts\"],\n+  cli: {\n+    entitiesDir: \"src/__tests__/databaseTest/entitiesTest\",\n+    migrationsDir: \"src/__tests__/databaseTest/migrationsTest\",\n+  },\n+  logging: true,\n+};\n+\n export default async () => {\n   if (process.env.NODE_ENV === \"test\") {\n-    return await createConnection({\n-      type: \"sqlite\",\n-      database: \"./src/__tests__/databaseTest/database.test.sqlite\",\n-      entities: [Users, Meals],\n-      migrations: [\"src/__tests__/databaseTest/migrationsTest/*.ts\"],\n-      cli: {\n-        entitiesDir: \"src/__tests__/databaseTest/entitiesTest\",\n-        migrationsDir: \"src/__tests__/databaseTest/migrationsTest\"\n-      }\n-      logging: true,\n-    });\n+    return await createConnection();\n   } else {\n     return await createConnection();\n   }\n };\n"
+                },
+                {
+                    "date": 1645406008110,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n };\n \n export default async () => {\n   if (process.env.NODE_ENV === \"test\") {\n-    return await createConnection();\n+    return await createConnection(optionsConnectiontest);\n   } else {\n     return await createConnection();\n   }\n };\n"
+                },
+                {
+                    "date": 1645406050956,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,13 @@\n-import { createConnection, getConnectionOptions } from \"typeorm\";\n+import {\n+  createConnection,\n+  getConnectionOptions,\n+  ConnectionOptions,\n+} from \"typeorm\";\n import { Meals } from \"../__tests__/databaseTest/entitiesTest/Meals\";\n import { Users } from \"../__tests__/databaseTest/entitiesTest/User\";\n \n-const optionsConnectiontest = {\n+const optionsConnectiontest: ConnectionOptions = {\n   type: \"sqlite\",\n   database: \"./src/__tests__/databaseTest/database.test.sqlite\",\n   entities: [Users, Meals],\n   migrations: [\"src/__tests__/databaseTest/migrationsTest/*.ts\"],\n"
+                },
+                {
+                    "date": 1645406064252,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n } from \"typeorm\";\n import { Meals } from \"../__tests__/databaseTest/entitiesTest/Meals\";\n import { Users } from \"../__tests__/databaseTest/entitiesTest/User\";\n \n-const optionsConnectiontest: ConnectionOptions = {\n+const optionsConnectionTest: ConnectionOptions = {\n   type: \"sqlite\",\n   database: \"./src/__tests__/databaseTest/database.test.sqlite\",\n   entities: [Users, Meals],\n   migrations: [\"src/__tests__/databaseTest/migrationsTest/*.ts\"],\n@@ -19,9 +19,9 @@\n };\n \n export default async () => {\n   if (process.env.NODE_ENV === \"test\") {\n-    return await createConnection(optionsConnectiontest);\n+    return await createConnection(optionsConnectionTest);\n   } else {\n     return await createConnection();\n   }\n };\n"
+                },
+                {
+                    "date": 1645406238967,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n } from \"typeorm\";\n import { Meals } from \"../__tests__/databaseTest/entitiesTest/Meals\";\n import { Users } from \"../__tests__/databaseTest/entitiesTest/User\";\n \n-const optionsConnectionTest: ConnectionOptions = {\n+const optionsConnectionTest:  = {\n   type: \"sqlite\",\n   database: \"./src/__tests__/databaseTest/database.test.sqlite\",\n   entities: [Users, Meals],\n   migrations: [\"src/__tests__/databaseTest/migrationsTest/*.ts\"],\n"
+                },
+                {
+                    "date": 1645406250525,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,12 +2,13 @@\n   createConnection,\n   getConnectionOptions,\n   ConnectionOptions,\n } from \"typeorm\";\n+import { SqliteConnectionOptions } from \"typeorm/driver/sqlite/SqliteConnectionOptions\";\n import { Meals } from \"../__tests__/databaseTest/entitiesTest/Meals\";\n import { Users } from \"../__tests__/databaseTest/entitiesTest/User\";\n \n-const optionsConnectionTest:  = {\n+const optionsConnectionTest: SqliteConnectionOptions = {\n   type: \"sqlite\",\n   database: \"./src/__tests__/databaseTest/database.test.sqlite\",\n   entities: [Users, Meals],\n   migrations: [\"src/__tests__/databaseTest/migrationsTest/*.ts\"],\n"
+                },
+                {
+                    "date": 1645406262304,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,5 @@\n-import {\n-  createConnection,\n-  getConnectionOptions,\n-  ConnectionOptions,\n-} from \"typeorm\";\n+import { createConnection } from \"typeorm\";\n import { SqliteConnectionOptions } from \"typeorm/driver/sqlite/SqliteConnectionOptions\";\n import { Meals } from \"../__tests__/databaseTest/entitiesTest/Meals\";\n import { Users } from \"../__tests__/databaseTest/entitiesTest/User\";\n \n"
+                },
+                {
+                    "date": 1645406370106,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,15 +5,15 @@\n \n const optionsConnectionTest: SqliteConnectionOptions = {\n   type: \"sqlite\",\n   database: \"./src/__tests__/databaseTest/database.test.sqlite\",\n-  entities: [Users, Meals],\n-  migrations: [\"src/__tests__/databaseTest/migrationsTest/*.ts\"],\n+  migrationsRun: true,\n+  entities: [\"src/database/entities/*.ts\"],\n+  migrations: [\"src/database/migrations/*.ts\"],\n   cli: {\n-    entitiesDir: \"src/__tests__/databaseTest/entitiesTest\",\n-    migrationsDir: \"src/__tests__/databaseTest/migrationsTest\",\n+    entitiesDir: \"src/database/entities\",\n+    migrationsDir: \"src/database/migrations\",\n   },\n-  logging: true,\n };\n \n export default async () => {\n   if (process.env.NODE_ENV === \"test\") {\n"
+                },
+                {
+                    "date": 1645406423156,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,14 +1,14 @@\n import { createConnection } from \"typeorm\";\n import { SqliteConnectionOptions } from \"typeorm/driver/sqlite/SqliteConnectionOptions\";\n-import { Meals } from \"../__tests__/databaseTest/entitiesTest/Meals\";\n-import { Users } from \"../__tests__/databaseTest/entitiesTest/User\";\n+import { Meals } from \"./entities/Meals\";\n+import { Users } from \"./entities/User\";\n \n const optionsConnectionTest: SqliteConnectionOptions = {\n   type: \"sqlite\",\n   database: \"./src/__tests__/databaseTest/database.test.sqlite\",\n   migrationsRun: true,\n-  entities: [\"src/database/entities/*.ts\"],\n+  entities: [Users, Meals],\n   migrations: [\"src/database/migrations/*.ts\"],\n   cli: {\n     entitiesDir: \"src/database/entities\",\n     migrationsDir: \"src/database/migrations\",\n"
+                },
+                {
+                    "date": 1645406839972,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,9 @@\n import { Users } from \"./entities/User\";\n \n const optionsConnectionTest: SqliteConnectionOptions = {\n   type: \"sqlite\",\n-  database: \"./src/__tests__/databaseTest/database.test.sqlite\",\n+  database: \"./src/__tests__/database.test.sqlite\",\n   migrationsRun: true,\n   entities: [Users, Meals],\n   migrations: [\"src/database/migrations/*.ts\"],\n   cli: {\n"
+                },
+                {
+                    "date": 1645408168913,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,12 +7,12 @@\n   type: \"sqlite\",\n   database: \"./src/__tests__/database.test.sqlite\",\n   migrationsRun: true,\n   entities: [Users, Meals],\n-  migrations: [\"src/database/migrations/*.ts\"],\n+  migrations: [\"src/__tests__/databaseTest/migrations/*.ts\"],\n   cli: {\n     entitiesDir: \"src/database/entities\",\n-    migrationsDir: \"src/database/migrations\",\n+    migrationsDir: \"src/__tests__/databaseTest/migrations\",\n   },\n };\n \n export default async () => {\n"
+                },
+                {
+                    "date": 1645408178551,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,9 +9,9 @@\n   migrationsRun: true,\n   entities: [Users, Meals],\n   migrations: [\"src/__tests__/databaseTest/migrations/*.ts\"],\n   cli: {\n-    entitiesDir: \"src/database/entities\",\n+    entitiesDir: \"src/__tests__/databaseTest//entities\",\n     migrationsDir: \"src/__tests__/databaseTest/migrations\",\n   },\n };\n \n"
+                },
+                {
+                    "date": 1645408249898,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,8 @@\n \n const optionsConnectionTest: SqliteConnectionOptions = {\n   type: \"sqlite\",\n   database: \"./src/__tests__/database.test.sqlite\",\n-  migrationsRun: true,\n   entities: [Users, Meals],\n   migrations: [\"src/__tests__/databaseTest/migrations/*.ts\"],\n   cli: {\n     entitiesDir: \"src/__tests__/databaseTest//entities\",\n"
+                },
+                {
+                    "date": 1645408397628,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,13 +5,14 @@\n \n const optionsConnectionTest: SqliteConnectionOptions = {\n   type: \"sqlite\",\n   database: \"./src/__tests__/database.test.sqlite\",\n+  migrationsRun: true,\n   entities: [Users, Meals],\n-  migrations: [\"src/__tests__/databaseTest/migrations/*.ts\"],\n+  migrations: [\"src/database/migrations/*.ts\"],\n   cli: {\n-    entitiesDir: \"src/__tests__/databaseTest//entities\",\n-    migrationsDir: \"src/__tests__/databaseTest/migrations\",\n+    entitiesDir: \"src/database/entities\",\n+    migrationsDir: \"src/database/migrations\",\n   },\n };\n \n export default async () => {\n"
+                },
+                {
+                    "date": 1645408503752,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,15 +5,14 @@\n \n const optionsConnectionTest: SqliteConnectionOptions = {\n   type: \"sqlite\",\n   database: \"./src/__tests__/database.test.sqlite\",\n-  migrationsRun: true,\n-  entities: [Users, Meals],\n-  migrations: [\"src/database/migrations/*.ts\"],\n-  cli: {\n-    entitiesDir: \"src/database/entities\",\n-    migrationsDir: \"src/database/migrations\",\n-  },\n+  // entities: [Users, Meals],\n+  // migrations: [\"src/database/migrations/*.ts\"],\n+  // cli: {\n+  //   entitiesDir: \"src/database/entities\",\n+  //   migrationsDir: \"src/database/migrations\",\n+  // },\n };\n \n export default async () => {\n   if (process.env.NODE_ENV === \"test\") {\n"
+                },
+                {
+                    "date": 1645408692147,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,9 +6,9 @@\n const optionsConnectionTest: SqliteConnectionOptions = {\n   type: \"sqlite\",\n   database: \"./src/__tests__/database.test.sqlite\",\n   // entities: [Users, Meals],\n-  // migrations: [\"src/database/migrations/*.ts\"],\n+  migrations: [\"src/database/migrations/*.ts\"],\n   // cli: {\n   //   entitiesDir: \"src/database/entities\",\n   //   migrationsDir: \"src/database/migrations\",\n   // },\n"
+                },
+                {
+                    "date": 1645408740716,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,9 +5,9 @@\n \n const optionsConnectionTest: SqliteConnectionOptions = {\n   type: \"sqlite\",\n   database: \"./src/__tests__/database.test.sqlite\",\n-  // entities: [Users, Meals],\n+  entities: [Users, Meals],\n   migrations: [\"src/database/migrations/*.ts\"],\n   // cli: {\n   //   entitiesDir: \"src/database/entities\",\n   //   migrationsDir: \"src/database/migrations\",\n"
+                }
+            ],
+            "date": 1645391460835,
+            "name": "Commit-0",
+            "content": "import { createConnection, getConnectionOptions } from \"typeorm\";\n\nexport default async () => {\n  const defaultOptions = await getConnectionOptions();\n\n  return createConnection();\n};\n"
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/database/entities/Meals.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1645387003811,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1645387003811,
+            "name": "Commit-0",
+            "content": "import { Entity, Column, CreateDateColumn, PrimaryColumn } from \"typeorm\";\nimport { v4 as uuid } from \"uuid\";\n\n@Entity(\"meals\")\nexport class Meals {\n  @PrimaryColumn()\n  id: string;\n\n  @Column()\n  name: string;\n\n  @Column()\n  protein: string;\n\n  @Column()\n  quantity_proteins: string | null;\n\n  @Column()\n  carbohydrate: string | null;\n\n  @Column()\n  quantity_carbohydrate: string | null;\n\n  @Column()\n  vegetable: string | null;\n\n  @Column()\n  quantity_vegetable: string | null;\n\n  @Column()\n  user_id: string;\n\n  @CreateDateColumn()\n  created_at: Date;\n\n  constructor() {\n    if (!this.id) {\n      this.id = uuid().toString();\n    }\n  }\n}\n"
+        }
+    ]
+}

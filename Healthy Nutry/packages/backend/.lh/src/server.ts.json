@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/server.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1645390887559,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1645390887559,
+            "name": "Commit-0",
+            "content": "import { app } from \"./app\";\n\napp.listen(3333, () => console.log(\"Server is running\"));\n"
+        }
+    ]
+}

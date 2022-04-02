@@ -1,0 +1,46 @@
+{
+    "sourceFile": "ormconfig.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 7,
+            "patches": [
+                {
+                    "date": 1645386198795,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1645386314869,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,13 +1,10 @@\n {\n   \"type\": \"postgres\",\n-  \"host\": \"localhost\",\n-  \"port\": 3333,\n   \"username\": \"healthy\",\n   \"password\": \"nutri\",\n   \"database\": \"nutridb\",\n   \"synchronize\": true,\n   \"logging\": false,\n   \"entities\": [\"src/database/entities/*.ts\"],\n-  \"migrations\": [\"src/database/migrations/*.ts\"],\n-  \"subscribers\": [\"src/subscriber/**/*.ts\"]\n+  \"migrations\": [\"src/database/migrations/*.ts\"]\n }\n"
+                },
+                {
+                    "date": 1645386379824,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,8 @@\n {\n   \"type\": \"postgres\",\n+  \"host\": \"localhost\",\n+  \"port\": 3342,\n   \"username\": \"healthy\",\n   \"password\": \"nutri\",\n   \"database\": \"nutridb\",\n   \"synchronize\": true,\n"
+                },
+                {
+                    "date": 1645386585210,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,8 @@\n {\n   \"type\": \"postgres\",\n   \"host\": \"localhost\",\n-  \"port\": 3342,\n+  \"port\": 5432,\n   \"username\": \"healthy\",\n   \"password\": \"nutri\",\n   \"database\": \"nutridb\",\n   \"synchronize\": true,\n"
+                },
+                {
+                    "date": 1645387361930,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,8 +5,7 @@\n   \"username\": \"healthy\",\n   \"password\": \"nutri\",\n   \"database\": \"nutridb\",\n   \"synchronize\": true,\n-  \"logging\": false,\n   \"entities\": [\"src/database/entities/*.ts\"],\n   \"migrations\": [\"src/database/migrations/*.ts\"]\n }\n"
+                },
+                {
+                    "date": 1645401956241,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,6 +6,10 @@\n   \"password\": \"nutri\",\n   \"database\": \"nutridb\",\n   \"synchronize\": true,\n   \"entities\": [\"src/database/entities/*.ts\"],\n-  \"migrations\": [\"src/database/migrations/*.ts\"]\n+  \"migrations\": [\"src/database/migrations/*.ts\"],\n+  \"cli\": {\n+    \"entitiesDir\": \"src/database/entities\",\n+    \"migrationsDir\": \"src/database/migrations\"\n+  }\n }\n"
+                },
+                {
+                    "date": 1645401979578,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,8 +5,9 @@\n   \"username\": \"healthy\",\n   \"password\": \"nutri\",\n   \"database\": \"nutridb\",\n   \"synchronize\": true,\n+  \"migrationsRun\": true,\n   \"entities\": [\"src/database/entities/*.ts\"],\n   \"migrations\": [\"src/database/migrations/*.ts\"],\n   \"cli\": {\n     \"entitiesDir\": \"src/database/entities\",\n"
+                },
+                {
+                    "date": 1645402006541,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,8 +4,10 @@\n   \"port\": 5432,\n   \"username\": \"healthy\",\n   \"password\": \"nutri\",\n   \"database\": \"nutridb\",\n+  \"dropSchema\": true,\n+  \"loggin\": false,\n   \"synchronize\": true,\n   \"migrationsRun\": true,\n   \"entities\": [\"src/database/entities/*.ts\"],\n   \"migrations\": [\"src/database/migrations/*.ts\"],\n"
+                }
+            ],
+            "date": 1645386198795,
+            "name": "Commit-0",
+            "content": "{\n  \"type\": \"postgres\",\n  \"host\": \"localhost\",\n  \"port\": 3333,\n  \"username\": \"healthy\",\n  \"password\": \"nutri\",\n  \"database\": \"nutridb\",\n  \"synchronize\": true,\n  \"logging\": false,\n  \"entities\": [\"src/database/entities/*.ts\"],\n  \"migrations\": [\"src/database/migrations/*.ts\"],\n  \"subscribers\": [\"src/subscriber/**/*.ts\"]\n}\n"
+        }
+    ]
+}
